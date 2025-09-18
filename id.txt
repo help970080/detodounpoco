@@ -1,0 +1,1 @@
+mongodb+srv://consultorpremium764_db_user:Ge9Jv8K67JqbOsyn@detodounpoco.gjcxilw.mongodb.net/?retryWrites=true&w=majority&appName=detodounpoco
