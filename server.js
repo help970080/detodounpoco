@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 app.use(cors());
+// Middleware para procesar JSON solo en rutas que no son el webhook
 app.use((req, res, next) => {
   if (req.originalUrl === '/api/webhook') {
     next();
