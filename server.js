@@ -19,7 +19,10 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static('uploads'));
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+// Agrega los parámetros TLS directamente a la URL de conexión
+const mongoURI = `${uri}&tls=true&tlsInsecure=true`;
+
+const client = new MongoClient(mongoURI);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -62,6 +65,7 @@ async function run() {
         const usersCollection = database.collection('users');
         const messagesCollection = database.collection('messages');
 
+        // ... (resto de las rutas sin cambios)
         app.get('/api/products', async (req, res) => {
             const { name, category_id, brand, minPrice, maxPrice } = req.query;
             let filter = { status: { $ne: 'vendido' } };
@@ -251,7 +255,7 @@ async function run() {
                 res.status(500).json({ message: 'Error al obtener los mensajes', error: error.message });
             }
         });
-
+        
         app.post('/api/auth/signin', async (req, res) => {
             const { email, password } = req.body;
             const user = await usersCollection.findOne({ email });
