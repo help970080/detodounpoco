@@ -10,12 +10,13 @@ const HomePage = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://detodounpoco.onrender.com/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         if (!response.ok) {
           throw new Error('No se pudieron cargar los productos');
         }
@@ -30,7 +31,7 @@ const HomePage = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [API_URL]);
 
   const handleQuickSearch = (e) => {
     e.preventDefault();

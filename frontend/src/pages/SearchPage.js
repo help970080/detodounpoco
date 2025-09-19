@@ -17,11 +17,12 @@ const SearchPage = () => {
   const [brands, setBrands] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await fetch('https://detodounpoco.onrender.com/api/brands');
+        const response = await fetch(`${API_URL}/api/brands`);
         if (response.ok) {
           const data = await response.json();
           setBrands(data);
@@ -38,7 +39,7 @@ const SearchPage = () => {
     if (nameParam) {
       handleSearch({ preventDefault: () => {} }, nameParam);
     }
-  }, [location.search]);
+  }, [location.search, API_URL]);
 
   const handleSearch = async (e, initialSearchTerm = searchTerm) => {
     e.preventDefault();
@@ -52,7 +53,7 @@ const SearchPage = () => {
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
-      const response = await fetch(`https://detodounpoco.onrender.com/api/products?${params.toString()}`);
+      const response = await fetch(`${API_URL}/api/products?${params.toString()}`);
       if (!response.ok) {
         throw new Error('Hubo un problema al buscar');
       }

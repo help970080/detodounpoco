@@ -15,12 +15,13 @@ const ProductDetailPage = () => {
   const [messages, setMessages] = useState([]);
   const [userMessage, setUserMessage] = useState('');
   const [replyToId, setReplyToId] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
   useEffect(() => {
     const fetchProductAndMessages = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://detodounpoco.onrender.com/api/products/${id}`);
+        const response = await fetch(`${API_URL}/api/products/${id}`);
         if (!response.ok) {
           throw new Error('Producto no encontrado. ¡Se esfumó!');
         }
@@ -33,7 +34,7 @@ const ProductDetailPage = () => {
           seller_email: data.seller_email || ''
         });
 
-        const messagesResponse = await fetch(`https://detodounpoco.onrender.com/api/messages/by-product/${id}`);
+        const messagesResponse = await fetch(`${API_URL}/api/messages/by-product/${id}`);
         const messagesData = await messagesResponse.json();
         setMessages(messagesData);
         
@@ -46,12 +47,12 @@ const ProductDetailPage = () => {
     };
 
     fetchProductAndMessages();
-  }, [id]);
+  }, [id, API_URL]);
 
   const handleMarkAsSold = async () => {
     if (window.confirm('¿Estás seguro de que quieres marcar este producto como vendido?')) {
         try {
-            const response = await fetch(`https://detodounpoco.onrender.com/api/products/sold/${id}`, {
+            const response = await fetch(`${API_URL}/api/products/sold/${id}`, {
                 method: 'PUT'
             });
             if (response.ok) {
@@ -81,7 +82,7 @@ const ProductDetailPage = () => {
             parentId: replyToId
         };
 
-        const response = await fetch('https://detodounpoco.onrender.com/api/messages', {
+        const response = await fetch(`${API_URL}/api/messages`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

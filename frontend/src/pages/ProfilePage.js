@@ -13,6 +13,7 @@ const ProfilePage = () => {
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('disponibles');
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
   useEffect(() => {
     if (!user) {
@@ -22,13 +23,13 @@ const ProfilePage = () => {
 
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(`https://detodounpoco.onrender.com/api/users/${user.uid}`);
+        const userResponse = await fetch(`${API_URL}/api/users/${user.uid}`);
         const userData = await userResponse.json();
         if (userResponse.ok) {
           setProfile(userData);
         }
 
-        const productsResponse = await fetch(`https://detodounpoco.onrender.com/api/products/by-user/${user.uid}`);
+        const productsResponse = await fetch(`${API_URL}/api/products/by-user/${user.uid}`);
         const productsData = await productsResponse.json();
         if (productsResponse.ok) {
           setProducts(productsData);
@@ -42,12 +43,12 @@ const ProfilePage = () => {
       }
     };
     fetchData();
-  }, [user, navigate]);
+  }, [user, navigate, API_URL]);
 
   const handleMarkAsSold = async (productId) => {
     if (window.confirm('¿Estás seguro de que quieres marcar este producto como vendido?')) {
         try {
-            const response = await fetch(`https://detodounpoco.onrender.com/api/products/sold/${productId}`, {
+            const response = await fetch(`${API_URL}/api/products/sold/${productId}`, {
                 method: 'PUT'
             });
             if (response.ok) {
@@ -75,7 +76,7 @@ const ProfilePage = () => {
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.')) {
         try {
-            const response = await fetch(`https://detodounpoco.onrender.com/api/products/${productId}`, {
+            const response = await fetch(`${API_URL}/api/products/${productId}`, {
                 method: 'DELETE'
             });
             if (response.ok) {

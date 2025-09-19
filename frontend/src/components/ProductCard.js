@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Tag, DollarSign, Image } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
-  const getOptimizedImageUrl = (url, width = 100, height = 100) => {
+  const getOptimizedImageUrl = (url) => {
     return url || 'https://via.placeholder.com/100x100?text=Sin+Imagen';
   };
 

@@ -13,6 +13,7 @@ const AddProductPage = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
   
   useEffect(() => {
     if (user && !user.hasActiveSubscription) {
@@ -44,7 +45,7 @@ const AddProductPage = () => {
         formData.append('images', file);
       });
 
-      const response = await fetch('https://detodounpoco.onrender.com/api/products/add', {
+      const response = await fetch(`${API_URL}/api/products/add`, {
         method: 'POST',
         body: formData,
       });
