@@ -8,6 +8,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // URL base de la API, usando una variable de entorno para flexibilidad
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -20,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     signIn: async (email, password) => {
-      const response = await fetch('https://detodounpoco.onrender.com/api/auth/signin', {
+      const response = await fetch(`${API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -33,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       return data;
     },
     signUp: async (email, password, username) => {
-      const response = await fetch('https://detodounpoco.onrender.com/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username })
@@ -48,8 +51,8 @@ export const AuthProvider = ({ children }) => {
     signOut: () => {
       localStorage.removeItem('user');
       setUser(null);
-      navigate('/');
-    }
+      navigate('/signin');
+    },
   };
 
   return (
@@ -59,6 +62,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
